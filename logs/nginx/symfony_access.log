@@ -1,0 +1,2 @@
+172.22.0.1 - - [07/May/2022:17:01:10 +0000] "GET /lucky/number HTTP/1.1" 500 447722 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15"
+172.22.0.1 - - [07/May/2022:17:03:11 +0000] "GET /lucky/number HTTP/1.1" 200 53 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15"

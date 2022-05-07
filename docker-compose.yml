@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysqldb_car_selling:
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=car
+      - MYSQL_USER=car
+      - MYSQL_PASSWORD=car
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_car_selling_db:/var/lib/mysql
+
+  car_selling:
+    depends_on:
+      - mysqldb_car_selling
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - '9000:9000'
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/var/www/app
+      - ./logs/symfony:/var/www/app/var/logs
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - '80:80'
+    links:
+      - car_selling
+    depends_on:
+      - mysqldb_car_selling
+      - car_selling
+    volumes:
+      - .:/var/www/app
+      - .:/var/www/app/vendor
+      - ./logs/nginx/:/var/log/nginx
+  adminer:
+    image: adminer
+    depends_on:
+      - mysqldb_car_selling
+    restart: always
+    ports:
+      - '8080:8080'
+
+volumes:
+  mysql_car_selling_db:
